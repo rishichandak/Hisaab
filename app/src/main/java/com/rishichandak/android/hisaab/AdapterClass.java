@@ -8,6 +8,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 /**
  * Created by rishi on 09-06-2016.
  */
@@ -35,7 +37,7 @@ public class AdapterClass  {
         return id;
     }
 
-    public String showHeads() {
+    public ArrayList<String> getHeadsNames(ArrayList<String> arrayList) {
         SQLiteDatabase db=helper.getWritableDatabase();
 
         //select _id head from heads
@@ -44,14 +46,15 @@ public class AdapterClass  {
         int idIndex=cursor.getColumnIndex(helper.COL_ID);
         int headIndex=cursor.getColumnIndex(helper.COL_HEAD);
         StringBuffer data=new StringBuffer();
+
+        arrayList.clear();
         while(cursor.moveToNext()){
-            int id= cursor.getInt(idIndex);
-            String head=cursor.getString(headIndex);
-            data.append(id+" "+head+"\n");
+            arrayList.add(cursor.getString(headIndex));
+            //int id= cursor.getInt(idIndex);
+            //String head=cursor.getString(headIndex);
+            //data.append(id+" "+head+"\n");
         }
-        return data.toString();
-
-
+        return arrayList;
     }
 
     //Helper Class
