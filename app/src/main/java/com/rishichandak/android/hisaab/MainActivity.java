@@ -7,13 +7,16 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
-    AdapterClass adapterClass;
+    private AdapterClass adapterClass;
+    private HelperClass helper;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         adapterClass=new AdapterClass(this);
-        long id=adapterClass.insertHeads("Laundry");
+        helper=new HelperClass(this);
+        //long id=adapterClass.insertHeads("Laundry");
+        long id=adapterClass.insertValues(helper.TABLE_HEADS, new String[]{helper.COL_HEAD},new String[]{"Newspaper"});
         if(id>0){
             Toast.makeText(this,"Insert Success",Toast.LENGTH_SHORT).show();
         }
