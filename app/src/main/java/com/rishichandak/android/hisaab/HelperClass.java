@@ -83,7 +83,7 @@ public class HelperClass extends SQLiteOpenHelper {
             db.execSQL(CREATE_HEADS);
             db.execSQL(CREATE_SUBHEADS);
             db.execSQL(CREATE_ENTRIES);
-            Toast.makeText(context,"onCreate Called",Toast.LENGTH_SHORT).show();
+            //Toast.makeText(context,"onCreate Called",Toast.LENGTH_SHORT).show();
         } catch (SQLException e) {
             e.printStackTrace();
             Toast.makeText(context,e.toString(),Toast.LENGTH_LONG).show();

@@ -3,15 +3,19 @@
     android:orientation="horizontal"
     android:layout_width="match_parent" android:layout_height="wrap_content"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    card_view:cardCornerRadius="10dp"
+    card_view:cardCornerRadius="7dp"
     card_view:cardElevation="5dp"
     android:id="@+id/cardList"
-    android:padding="20dp">
+    android:padding="10dp"
+    android:clickable="true"
+    android:longClickable="true">
 
     <RelativeLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/relativeList">
+        android:id="@+id/relativeList"
+        android:clickable="true"
+        android:longClickable="true">
 
         <TextView
             android:layout_width="wrap_content"
@@ -20,7 +24,8 @@
             android:text="ItemNo"
             android:id="@+id/tvItemNo"
             android:padding="10dp"
-            android:layout_alignParentTop="true"/>
+            android:layout_alignParentTop="true"
+            android:visibility="gone"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -28,9 +33,101 @@
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:text="Item"
             android:id="@+id/tvItemName"
-            android:padding="10dp"
             android:gravity="center_vertical"
-            android:layout_toRightOf="@id/tvItemNo"
-            android:allowUndo="true" />
+            android:allowUndo="true"
+            android:paddingLeft="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/tvItemNo"
+            android:paddingTop="10dp"
+            android:paddingBottom="5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="\@"
+            android:layout_below="@+id/tvItemName"
+            android:layout_alignLeft="@+id/tvItemName"
+            android:id="@+id/tvAt"
+            android:paddingLeft="30dp"
+            android:paddingRight="6dp"
+            android:paddingBottom="10dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="₹"
+            android:layout_below="@+id/tvItemName"
+            android:layout_toRightOf="@+id/tvAt"
+            android:id="@+id/tvRs"
+            android:paddingLeft="0dp"
+            android:paddingRight="2dp"
+            android:paddingBottom="10dp"
+            android:paddingTop="1dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="0"
+            android:id="@+id/tvRate"
+            android:layout_below="@+id/tvItemName"
+            android:layout_toEndOf="@+id/tvRs"
+            android:paddingTop="1dp" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+"
+            android:id="@+id/btnPlus"
+            android:minHeight="30dp"
+            android:minWidth="30dp"
+            android:layout_alignParentEnd="true"
+            android:textColor="@android:color/holo_green_dark"
+            android:background="?android:attr/selectableItemBackground"
+            android:textSize="20dp"
+            android:paddingTop="7dp"
+            android:paddingRight="20dp"
+            android:paddingLeft="20dp"
+            android:paddingBottom="5dp"
+            android:clickable="true" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="-"
+            android:minHeight="30dp"
+            android:minWidth="30dp"
+            android:id="@+id/btnMinus"
+            android:layout_below="@+id/btnPlus"
+            android:layout_alignParentEnd="true"
+            android:textColor="@android:color/holo_red_dark"
+            android:background="?android:attr/selectableItemBackground"
+            android:textSize="25dp"
+            android:paddingTop="7dp"
+            android:paddingBottom="2dp"
+            android:paddingRight="20dp"
+            android:paddingLeft="20dp"
+            android:clickable="true" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="0"
+            android:id="@+id/etQuantity"
+            android:layout_marginEnd="23dp"
+            android:textSize="@dimen/abc_text_size_display_1_material"
+            android:layout_toStartOf="@+id/btnPlus"
+            android:padding="10dp"
+            android:inputType="numberDecimal"
+            android:maxWidth="100dp"
+            android:longClickable="true"
+            android:clickable="true"
+            android:layout_alignBottom="@+id/tvAt"
+            android:editable="true" />
+
     </RelativeLayout>
 </android.support.v7.widget.CardView>

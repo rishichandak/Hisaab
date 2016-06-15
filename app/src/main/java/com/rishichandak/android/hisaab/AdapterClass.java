@@ -44,7 +44,7 @@ public class AdapterClass  {
         long id= 0;
         try {
             id = db.insert(tableName,null,cValues);
-            Toast.makeText(context,"Insert",Toast.LENGTH_SHORT).show();
+           // Toast.makeText(context,"Insert",Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(context,"Insert Error:    "+e.toString(),Toast.LENGTH_LONG).show();
