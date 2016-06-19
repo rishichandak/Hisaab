@@ -2,6 +2,8 @@ package com.rishichandak.android.hisaab;
 
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -12,20 +14,18 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-public class MainActivity extends AppCompatActivity {
+public class BasicActivity extends AppCompatActivity {
 
     private AdapterClass adapterClass;
     private HelperClass helper;
     private Toolbar toolbar;
     private Spinner spinner_nav;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_basic);
         adapterClass = new AdapterClass(this);
         helper = new HelperClass(this);
-
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         spinner_nav = (Spinner) findViewById(R.id.spinner_nav);
 
@@ -43,11 +43,17 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "Insert Fail", Toast.LENGTH_SHORT).show();
         }
 
-        // String heads=adapterClass.showHeads();
-        // Toast.makeText(this,heads,Toast.LENGTH_LONG).show();
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+                goToCalendar();
+            }
+        });
     }
 
-    // add items into spinner dynamically
     public void addItemsToSpinner() {
 
         final Cursor allDataCursor= adapterClass.getAllData();
@@ -78,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void goToCalendar(View view) {
+    public void goToCalendar() {
         //Intent intent=new Intent(this,CalendarActivity.class);
         //startActivity(intent);
         DateDialog dialog = new DateDialog();
@@ -119,5 +125,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 
 }
