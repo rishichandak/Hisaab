@@ -20,20 +20,6 @@ public class AdapterClass  {
         helper=new HelperClass(context);
         this.context=context;
     }
-  /*  public long insertHeads(String value){
-        SQLiteDatabase db=helper.getWritableDatabase();
-        ContentValues values=new ContentValues();
-        values.put(helper.COL_HEAD,value);
-        long id= 0;
-        try {
-            id = db.insert(helper.TABLE_HEADS,null,values);
-            Toast.makeText(context,"Insert",Toast.LENGTH_SHORT).show();
-        } catch (Exception e) {
-            e.printStackTrace();
-            Toast.makeText(context,"Insert Error:    "+e.toString(),Toast.LENGTH_LONG).show();
-        }
-        return id;
-    }*/
 
     public long insertValues(String tableName, String[] columnName, String[] columnValues){
         SQLiteDatabase db=helper.getWritableDatabase();
@@ -49,6 +35,7 @@ public class AdapterClass  {
             e.printStackTrace();
             Toast.makeText(context,"Insert Error:    "+e.toString(),Toast.LENGTH_LONG).show();
         }
+       // db.close();
         return id;
     }
 
@@ -72,11 +59,38 @@ public class AdapterClass  {
         return arrayList;
     }
 
-    public Cursor getAllData() {
+    public Cursor getAllHeads() {
         SQLiteDatabase db=helper.getWritableDatabase();
         //select _id head from heads
         String[] columns={helper.COL_ID,helper.COL_HEAD};
-        Cursor cursor=db.query(helper.TABLE_HEADS,columns,null,null,null,null,null);
+        Cursor cursor=null;
+        try {
+            cursor=db.query(helper.TABLE_HEADS,columns,null,null,null,null,null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context,"getAllSubHead() Error:    "+e.toString(),Toast.LENGTH_LONG).show();
+        }
+     //   db.close();
+        return cursor;
+    }
+
+    public Cursor getAllSubHeads() {
+        SQLiteDatabase db=helper.getWritableDatabase();
+
+        String[] columns={helper.COL_ID,helper.COL_SUB_HEAD,helper.COL_PRICE};
+       // String[] selectionArgs={"helper.COL_UNDER_HEAD_ID==BasicActivity.selectedHeadNumber","helper.COL_SHOW==1"};
+        Cursor cursor=null;
+        try {
+            cursor=db.query(helper.TABLE_SUBHEADS,
+                    columns,
+                    helper.COL_UNDER_HEAD_ID + " =? " + " and " + helper.COL_SHOW + " =?",
+                    new String[]{BasicActivity.selectedHeadNumber,"1"},
+                    null,null,null);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context,"getAllHead() Error:    "+e.toString(),Toast.LENGTH_LONG).show();
+        }
+       // db.close();
         return cursor;
     }
 

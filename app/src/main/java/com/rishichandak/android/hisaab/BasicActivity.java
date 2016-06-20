@@ -20,28 +20,51 @@ public class BasicActivity extends AppCompatActivity {
     private HelperClass helper;
     private Toolbar toolbar;
     private Spinner spinner_nav;
+
+    public static String selectedHeadNumber="0";
+    public static String selectedHeadName="hisaab";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic);
         adapterClass = new AdapterClass(this);
         helper = new HelperClass(this);
+
+        //Custom ToolBar
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         spinner_nav = (Spinner) findViewById(R.id.spinner_nav);
 
         if (toolbar != null) {
             setSupportActionBar(toolbar);
-
             getSupportActionBar().setDisplayShowTitleEnabled(false);
+            //getSupportActionBar().setIcon(R.drawable.ic_launcher);
         }
         addItemsToSpinner();
+        // Toolbar Ends
 
-        long id = adapterClass.insertValues(helper.TABLE_HEADS, new String[]{helper.COL_HEAD}, new String[]{"Milk"});
-        if (id > 0) {
-            Toast.makeText(this, "Insert Success", Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(this, "Insert Fail", Toast.LENGTH_SHORT).show();
-        }
+
+        adapterClass.insertValues(helper.TABLE_HEADS, new String[]{helper.COL_HEAD}, new String[]{"Milk"});
+        adapterClass.insertValues(helper.TABLE_HEADS, new String[]{helper.COL_HEAD}, new String[]{"Laundry"});
+
+        adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Toned","1","28"});
+        adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Cream","1","35"});
+        adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Full Cream","1","40"});
+        adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Ram Dudh wala morning","1","35"});
+        adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Ram Dudh wala evening","1","40"});
+        adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Dahi 100gm","1","20"});
+        adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Dahi 250gm","1","50"});
+
+        adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Shirt","2","5"});
+        adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Pant","2","5"});
+        adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Saree","2","15"});
+        adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Coat","2","30"});
+        adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Salwar","2","10"});
+        adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Kurta","2","15"});
+
+
+
+
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -56,7 +79,7 @@ public class BasicActivity extends AppCompatActivity {
 
     public void addItemsToSpinner() {
 
-        final Cursor allDataCursor= adapterClass.getAllData();
+        final Cursor allDataCursor= adapterClass.getAllHeads();
         String[] from=new String[]{helper.COL_HEAD};
         int[] to=new int[]{R.id.tvItemName};
         SimpleCursorAdapter simpleCursorAdapter=new SimpleCursorAdapter(getBaseContext(),R.layout.spinner_row,allDataCursor,from,to,0);
@@ -68,10 +91,12 @@ public class BasicActivity extends AppCompatActivity {
             public void onItemSelected(AdapterView<?> adapter, View v,
                                        int position, long id) {
                 // On selecting a spinner item
-                String item = adapter.getItemAtPosition(position).toString();
+                Cursor item = (Cursor)adapter.getItemAtPosition(position);
+                selectedHeadNumber=item.getString(item.getColumnIndex(helper.COL_ID));
+                selectedHeadName=item.getString(item.getColumnIndex(helper.COL_HEAD));
 
                 // Showing selected spinner item
-                Toast.makeText(getApplicationContext(), "Selected  : " + item,
+                Toast.makeText(getApplicationContext(), "Selected  : " + selectedHeadNumber,
                         Toast.LENGTH_LONG).show();
             }
 

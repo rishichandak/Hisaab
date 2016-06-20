@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,8 +16,10 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class AddLessActivity extends AppCompatActivity {
 
@@ -23,29 +28,32 @@ public class AddLessActivity extends AppCompatActivity {
     AdapterClass adapterClass;
     HelperClass helper;
     ArrayList<String> stringArrayList=new ArrayList<>();
+    private Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_less);
-        tvDate=(TextView) findViewById(R.id.tvDate); //date time
         listView=(ListView) findViewById(R.id.listView);
         //GetDate
         Intent intent=getIntent();
-        Date selectedDate=(Date) intent.getSerializableExtra("Date");
-        tvDate.setText(selectedDate.toString());
+        String selectedDate = getFormatedDate((Date)intent.getSerializableExtra("date"));
 
         adapterClass=new AdapterClass(getApplicationContext());
         helper=new HelperClass(getApplicationContext());
 
-       //   stringArrayList.add("Add new");
-       // ArrayAdapter arrayAdapter=new ArrayAdapter(this,android.R.layout.simple_list_item_1,stringArrayList);
-        //listView.setAdapter(arrayAdapter);
-        //stringArrayList=adapterClass.getHeadsNames(stringArrayList);
-        //arrayAdapter.notifyDataSetChanged();
+        toolbar = (Toolbar) findViewById(R.id.my_toolbar);
 
-        final Cursor allDataCursor= adapterClass.getAllData();
-        String[] from=new String[]{helper.COL_ID,helper.COL_HEAD};
-        int[] to=new int[]{R.id.tvItemNo,R.id.tvItemName};
+        if (toolbar != null) {
+            setSupportActionBar(toolbar);
+            getSupportActionBar().setDisplayShowTitleEnabled(true);
+            getSupportActionBar().setTitle(BasicActivity.selectedHeadName);
+            getSupportActionBar().setSubtitle(selectedDate);
+        }
+
+        final Cursor allDataCursor= adapterClass.getAllSubHeads();
+        String[] from=new String[]{helper.COL_ID,helper.COL_SUB_HEAD,helper.COL_PRICE};
+        int[] to=new int[]{R.id.tvItemNo,R.id.tvItemName,R.id.tvRate};
         SimpleCursorAdapter simpleCursorAdapter=new SimpleCursorAdapter(getBaseContext(),R.layout.list_add_less,allDataCursor,from,to,0)
         {
             @Override
@@ -84,6 +92,7 @@ public class AddLessActivity extends AppCompatActivity {
 
         simpleCursorAdapter.notifyDataSetChanged();
         listView.setAdapter(simpleCursorAdapter);
+
       /*  listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -107,5 +116,23 @@ public class AddLessActivity extends AppCompatActivity {
                 return true;
             }
         }); */
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.add_less_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        return false;
+    }
+
+    private String getFormatedDate(Date date) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "dd-MM-yyyy", Locale.getDefault());
+        return dateFormat.format(date);
     }
 }

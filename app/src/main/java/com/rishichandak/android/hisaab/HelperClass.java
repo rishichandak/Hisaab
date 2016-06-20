@@ -74,7 +74,6 @@ public class HelperClass extends SQLiteOpenHelper {
     public HelperClass(Context context){
         super(context,DATABASE_NAME,null,DATABASE_VERSION);
         this.context=context;
-        Toast.makeText(context,"constructor Called",Toast.LENGTH_SHORT).show();
     }
 
     @Override
