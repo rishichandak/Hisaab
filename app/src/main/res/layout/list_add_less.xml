@@ -30,7 +30,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:maxWidth="240dp"
+            android:text="EntryNo"
+            android:id="@+id/tvEntryNo"
+            android:padding="10dp"
+            android:layout_alignParentTop="true"
+            android:visibility="gone"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:maxWidth="220dp"
             android:text="Item"
             android:id="@+id/tvItemName"
             android:gravity="center_vertical"

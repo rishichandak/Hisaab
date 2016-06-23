@@ -4,16 +4,16 @@
     tools:context="com.pratap.cardviews1.MainActivity" >
 
     <item
-        android:id="@+id/action_save"
+        android:id="@+id/action_discard"
         android:icon="@drawable/ic_clear_white_24dp"
         android:orderInCategory="100"
-        android:title="Save"
+        android:title="Discard"
         app:showAsAction="ifRoom"/>
     <item
-        android:id="@+id/action_discard"
+        android:id="@+id/action_save"
         android:icon="@drawable/ic_done_white_24dp"
         android:orderInCategory="100"
-        android:title="Discard"
+        android:title="Save"
         app:showAsAction="ifRoom"/>
 
 </menu>

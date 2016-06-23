@@ -42,7 +42,7 @@ public class BasicActivity extends AppCompatActivity {
         }
         addItemsToSpinner();
         // Toolbar Ends
-
+/*
 
         adapterClass.insertValues(helper.TABLE_HEADS, new String[]{helper.COL_HEAD}, new String[]{"Milk"});
         adapterClass.insertValues(helper.TABLE_HEADS, new String[]{helper.COL_HEAD}, new String[]{"Laundry"});
@@ -61,8 +61,7 @@ public class BasicActivity extends AppCompatActivity {
         adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Coat","2","30"});
         adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Salwar","2","10"});
         adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Kurta","2","15"});
-
-
+*/
 
 
 
@@ -96,7 +95,7 @@ public class BasicActivity extends AppCompatActivity {
                 selectedHeadName=item.getString(item.getColumnIndex(helper.COL_HEAD));
 
                 // Showing selected spinner item
-                Toast.makeText(getApplicationContext(), "Selected  : " + selectedHeadNumber,
+                Toast.makeText(getApplicationContext(), "Selected  : " + selectedHeadNumber+" Name:"+selectedHeadName,
                         Toast.LENGTH_LONG).show();
             }
 

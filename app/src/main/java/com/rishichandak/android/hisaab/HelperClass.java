@@ -37,6 +37,10 @@ public class HelperClass extends SQLiteOpenHelper {
     public static final String COL_SUB_HEAD_ID="subHeadId";
     public static final String COL_QUANTITY="quantity";
 
+    //JOIN COLUMN NAME
+    public static final String COL_JOIN_ENTRY_ID="entryId";
+
+
     //Database Version
     private static final int DATABASE_VERSION=1;
 
