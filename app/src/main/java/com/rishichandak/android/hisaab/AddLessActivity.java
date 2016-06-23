@@ -3,11 +3,12 @@ package com.rishichandak.android.hisaab;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.SimpleDateFormat;
@@ -168,46 +170,61 @@ public class AddLessActivity extends AppCompatActivity {
         int menuItemId=item.getItemId();
         switch(menuItemId){
             case R.id.action_save:
-               ListAdapter listAdapterdapter= listView.getAdapter();
-                String id,entryId,subHead,quantity,underHead,price;
-                StringBuilder data=new StringBuilder();
-                for(int i=0; i<listAdapterdapter.getCount(); i++){
-                    Cursor cursor= (Cursor) listAdapterdapter.getItem(i);
-                    id=cursor.getString(cursor.getColumnIndex(helper.COL_ID));
-                    entryId=cursor.getString(cursor.getColumnIndex(helper.COL_JOIN_ENTRY_ID));
-                    subHead=cursor.getString(cursor.getColumnIndex(helper.COL_SUB_HEAD));  //No Need
-                    quantity=cursor.getString(cursor.getColumnIndex(helper.COL_QUANTITY));
-                    underHead=cursor.getString(cursor.getColumnIndex(helper.COL_UNDER_HEAD_ID)); //No Need
-                    price=cursor.getString(cursor.getColumnIndex(helper.COL_PRICE));  //No need
-                    data.append(id+entryId+subHead+quantity+underHead+price+"\n");
+                try {
+                    ListAdapter listAdapter= listView.getAdapter();
+                    String id,entryId,subHead,quantity,underHead,price;
+                    StringBuilder data=new StringBuilder();
+                    int total=listView.getCount();
+                    for(int i=0; i<total; i++){
+                        View singleListView=listView.getChildAt(i);
+                        quantity=((EditText)singleListView.findViewById(R.id.etQuantity)).getText().toString();
+                       if(!quantity.equals("0") ) {
 
-                    if(entryId.equals("-1")){
-                        String[] columnNames=new String[]{helper.COL_DATE,helper.COL_SUB_HEAD_ID,helper.COL_QUANTITY};
-                        String[] columnValues=new String[]{sqlTypeDate,id,quantity};
-                        long check=adapterClass.insertValues(helper.TABLE_ENTRIES,columnNames,columnValues);
-                        if(check>0)
-                        {
-                            Snackbar.make(findViewById(R.id.layoutAddLess), "Done", Snackbar.LENGTH_SHORT)
-                                    .setAction("Action", null).show();
-                        }
-                        else{
-                            Snackbar.make(findViewById(R.id.layoutAddLess), "Fail", Snackbar.LENGTH_SHORT)
-                                    .setAction("Action", null).show();
-                        }
+                           //Cursor cursor = (Cursor) listAdapter.getItem(i);
+                           //id = cursor.getString(cursor.getColumnIndex(helper.COL_ID));
+                           //entryId = cursor.getString(cursor.getColumnIndex(helper.COL_JOIN_ENTRY_ID));
+                           //subHead = cursor.getString(cursor.getColumnIndex(helper.COL_SUB_HEAD));  //No Need
+                           //underHead = cursor.getString(cursor.getColumnIndex(helper.COL_UNDER_HEAD_ID)); //No Need
+                           //price = cursor.getString(cursor.getColumnIndex(helper.COL_PRICE));  //No need
 
+                            id=((TextView)singleListView.findViewById(R.id.tvItemNo)).getText().toString();
+                           entryId=((TextView)singleListView.findViewById(R.id.tvEntryNo)).getText().toString();
+                           subHead=((TextView)singleListView.findViewById(R.id.tvItemName)).getText().toString();
+                           price=((TextView)singleListView.findViewById(R.id.tvRate)).getText().toString();
+
+                           data.append(id + entryId + subHead + quantity + "\n");
+
+                           if (entryId.equals("-1")) {
+                               String[] columnNames = new String[]{helper.COL_DATE, helper.COL_SUB_HEAD_ID, helper.COL_QUANTITY};
+                               String[] columnValues = new String[]{sqlTypeDate, id, quantity};
+                               long check = adapterClass.insertValues(helper.TABLE_ENTRIES, columnNames, columnValues);
+                               if (check > 0) {
+                                   Log.i("Insert",data.toString());
+                                   singleListView.setBackgroundColor(Color.GRAY);
+
+                                   singleListView.setBackgroundColor(Color.WHITE);
+
+                                   //Snackbar.make(findViewById(R.id.layoutAddLess), "Done", Snackbar.LENGTH_SHORT)
+                                    //       .setAction("Action", null).show();
+                               } else {
+                                    Log.i("Insert", "Error");
+                                   //Snackbar.make(findViewById(R.id.layoutAddLess), "Fail", Snackbar.LENGTH_SHORT)
+                                   //        .setAction("Action", null).show();
+                               }
+
+
+                           } else {
+
+                           }
+
+                       }
 
                     }
-                    else{
-
-                    }
-
-
-
+                   // Toast.makeText(this,data,Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
-                Toast.makeText(this,data,Toast.LENGTH_LONG).show();
                 break;
-
-
 
             case R.id.action_discard:
                 Intent back=new Intent(this,BasicActivity.class);
@@ -215,7 +232,7 @@ public class AddLessActivity extends AppCompatActivity {
                 break;
             default:Toast.makeText(this,"Wrong Selection",Toast.LENGTH_SHORT).show();
         }
-        return false;
+        return true;
     }
 
     private String getFormatedDate(Date date) {
