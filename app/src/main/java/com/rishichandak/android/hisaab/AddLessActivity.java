@@ -3,7 +3,6 @@ package com.rishichandak.android.hisaab;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -200,10 +199,7 @@ public class AddLessActivity extends AppCompatActivity {
                                long check = adapterClass.insertValues(helper.TABLE_ENTRIES, columnNames, columnValues);
                                if (check > 0) {
                                    Log.i("Insert",data.toString());
-                                   singleListView.setBackgroundColor(Color.GRAY);
-
-                                   singleListView.setBackgroundColor(Color.WHITE);
-
+                                  // singleListView.setBackgroundColor(Color.GRAY);
                                    //Snackbar.make(findViewById(R.id.layoutAddLess), "Done", Snackbar.LENGTH_SHORT)
                                     //       .setAction("Action", null).show();
                                } else {
