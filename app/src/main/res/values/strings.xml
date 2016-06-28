@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Hisaab</string>
     <string name="title_activity_basic">Hisaab</string>
+    <string name="dialog_exit">Exit</string>
 </resources>

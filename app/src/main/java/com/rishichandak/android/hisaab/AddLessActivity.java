@@ -1,14 +1,15 @@
 package com.rishichandak.android.hisaab;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -36,6 +37,8 @@ public class AddLessActivity extends AppCompatActivity {
     public static Date incomingDate;
     private String subTitleDate="Sat, 10 Sep,'94" ;
     private String sqlTypeDate="1994-09-10";
+    public static int isEdited=0;
+    CustomAdapter customAdapter=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,7 +63,8 @@ public class AddLessActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-        listView.setAdapter(new CustomAdapter(this));
+        customAdapter=new CustomAdapter(this);
+        listView.setAdapter(customAdapter);
 
        /* listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -90,7 +94,7 @@ public class AddLessActivity extends AppCompatActivity {
         int menuItemId=item.getItemId();
         switch(menuItemId){
             case R.id.home:
-                onBackPressed();
+                super.onBackPressed();
                 break;
 
             case R.id.action_discard:
@@ -100,7 +104,6 @@ public class AddLessActivity extends AppCompatActivity {
 
             case R.id.action_save:
                 try {
-
                     String id,entryId,quantity;
                     int total=listView.getCount();
                     for(int i=0; i<total; i++){
@@ -118,9 +121,13 @@ public class AddLessActivity extends AppCompatActivity {
                             adapterClass.updateValues(helper.TABLE_ENTRIES,new String[]{helper.COL_QUANTITY},new String[]{quantity},helper.COL_ID+" = ? ",new String[]{entryId});
                        }
                     }
+                    Toast.makeText(this,"Record Saved",Toast.LENGTH_LONG).show();
+                    listView.setAdapter(new CustomAdapter(this));
+                    AddLessActivity.isEdited=0;
+
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Log.e("error",e.toString());
+                    Toast.makeText(this,"Error Saving",Toast.LENGTH_LONG).show();
                 }
                 break;
 
@@ -137,6 +144,25 @@ public class AddLessActivity extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyy-MM-dd", Locale.getDefault());
         return dateFormat.format(date);
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (AddLessActivity.isEdited == 1) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Really Exit?")
+                    .setMessage("Are you sure you want to exit without saving?")
+                    .setNegativeButton(android.R.string.no, null)
+                    .setPositiveButton(R.string.dialog_exit, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface arg0, int arg1) {
+                            finish();
+                            AddLessActivity.isEdited=0;
+                        }
+                    }).create().show();
+        }
+        else{
+            super.onBackPressed();
+        }
     }
 }
 
@@ -199,52 +225,76 @@ class CustomAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return Long.getLong( dataList.get(position).tvItemNo);
+        return Long.valueOf( dataList.get(position).tvItemNo);
+    }
+
+    class ViewHolder{
+        TextView tvItemNo;
+        TextView tvEntryNo;
+        TextView tvItemName;
+        EditText etQuantity;
+        TextView tvRate;
+        Button btnPlus;
+        Button btnMinus;
+        ViewHolder(View row){
+             tvItemNo= (TextView) row.findViewById(R.id.tvItemNo);
+             tvEntryNo= (TextView) row.findViewById(R.id.tvEntryNo);
+             tvItemName= (TextView) row.findViewById(R.id.tvItemName);
+             etQuantity= (EditText) row.findViewById(R.id.etQuantity);
+             tvRate= (TextView) row.findViewById(R.id.tvRate);
+             btnPlus= (Button) row.findViewById(R.id.btnPlus);
+             btnMinus= (Button) row.findViewById(R.id.btnMinus);
+        }
+
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflator= (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View row= inflator.inflate(R.layout.list_add_less,parent,false);
-
-        TextView tvItemNo= (TextView) row.findViewById(R.id.tvItemNo);
-        TextView tvEntryNo= (TextView) row.findViewById(R.id.tvEntryNo);
-        TextView tvItemName= (TextView) row.findViewById(R.id.tvItemName);
-        final EditText etQuantity= (EditText) row.findViewById(R.id.etQuantity);
-        TextView tvRate= (TextView) row.findViewById(R.id.tvRate);
-        Button btnPlus= (Button) row.findViewById(R.id.btnPlus);
-        Button btnMinus= (Button) row.findViewById(R.id.btnMinus);
-
+       View row=convertView;
+        ViewHolder viewHolder=null;
+        if(viewHolder==null) {
+            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            row = inflater.inflate(R.layout.list_add_less, parent, false);
+            viewHolder=new ViewHolder(row);
+            row.setTag(viewHolder);
+        }else {
+            viewHolder= (ViewHolder) row.getTag();
+        }
         SingleRow temp=dataList.get(position);
 
-        tvItemNo.setText(temp.tvItemNo);
-        tvEntryNo.setText(temp.tvEntryNo);
-        tvItemName.setText(temp.tvItemName);
-        tvRate.setText(temp.tvRate);
-        etQuantity.setText(temp.etQuantity);
+        viewHolder.tvItemNo.setText(temp.tvItemNo);
+        viewHolder.tvEntryNo.setText(temp.tvEntryNo);
+        viewHolder.tvItemName.setText(temp.tvItemName);
+        viewHolder.tvRate.setText(temp.tvRate);
+        viewHolder.etQuantity.setText(temp.etQuantity);
 
-        btnPlus.setOnClickListener(new View.OnClickListener() {
+        final ViewHolder finalViewHolder = viewHolder;
+        viewHolder.btnPlus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int qty= Integer.parseInt(etQuantity.getText().toString());
-                etQuantity.setText(String.valueOf(++qty));
+
+                int qty= Integer.parseInt(finalViewHolder.etQuantity.getText().toString());
+                finalViewHolder.etQuantity.setText(String.valueOf(++qty));
             }
         });
 
-        btnMinus.setOnClickListener(new View.OnClickListener() {
+        final ViewHolder finalViewHolder1 = viewHolder;
+        viewHolder.btnMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int qty= Integer.parseInt( etQuantity.getText().toString());
+
+                int qty= Integer.parseInt( finalViewHolder1.etQuantity.getText().toString());
                 if(qty>0) {
-                    etQuantity.setText(String.valueOf(--qty));
+                    finalViewHolder.etQuantity.setText(String.valueOf(--qty));
                 }
                 else {
-                    Toast.makeText(context, "Quantity cannot be less than 0", Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, "Quantity cannot be less than 0", Toast.LENGTH_SHORT).show();
                 }
             }
         });
 
-        etQuantity.addTextChangedListener(new TextWatcher() {
+        final ViewHolder finalViewHolder2 = viewHolder;
+        viewHolder.etQuantity.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -252,7 +302,8 @@ class CustomAdapter extends BaseAdapter {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                dataList.get(position).etQuantity=etQuantity.getText().toString();
+                AddLessActivity.isEdited=1;
+                dataList.get(position).etQuantity= finalViewHolder2.etQuantity.getText().toString();
                 getTotalAmount();
 
             }
