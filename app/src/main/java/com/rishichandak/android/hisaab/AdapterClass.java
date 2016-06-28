@@ -13,6 +13,7 @@ public class AdapterClass  {
 
     HelperClass helper;
     private Context context;
+
     public AdapterClass(Context context) {
         helper=new HelperClass(context);
         this.context=context;
@@ -27,13 +28,29 @@ public class AdapterClass  {
         long id= 0;
         try {
             id = db.insert(tableName,null,cValues);
-           // Toast.makeText(context,"Insert",Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(context,"Insert Error:    "+e.toString(),Toast.LENGTH_LONG).show();
         }
        // db.close();
         return id;
+    }
+
+    public long updateValues(String tableName, String[] columnNames, String[] columnValues, String where, String[] whereArgs){
+
+        SQLiteDatabase db=helper.getWritableDatabase();
+        ContentValues cValues=new ContentValues();
+        long rowsEfected=0;
+        for(int i=0;i<columnNames.length;i++){
+            cValues.put(columnNames[i],columnValues[i]);
+        }
+        try {
+            rowsEfected=db.update(tableName,cValues,where,whereArgs);
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context,"Update Error:    "+e.toString(),Toast.LENGTH_LONG).show();
+        }
+        return rowsEfected;
     }
 
     public Cursor getAllHeads() {

@@ -4,18 +4,77 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:id="@+id/layoutAddLess"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     tools:context="com.rishichandak.android.hisaab.AddLessActivity">
-    <android.support.v7.widget.Toolbar
+<!--    <android.support.v7.widget.Toolbar
         android:id="@+id/my_toolbar"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimaryDark"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
 
-        />
+        >
+    </android.support.v7.widget.Toolbar>
+-->
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimaryDark"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvToolbarTitle"
+                style="@style/Base.TextAppearance.AppCompat.Title"
+                android:textColor="#FFFFFF"
+                android:text="Hisaab"
+                />
+            <TextView
+                android:layout_below="@+id/tvToolbarTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/tvToolbarSubTitle"
+                style="@style/Base.TextAppearance.AppCompat.Subhead"
+                android:textColor="#FFFFFF"
+                android:text="Hisaab"
+                />
+
+                <TextView
+                    android:layout_below="@+id/tvToolbarSubTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvToolbarRs"
+                    android:textColor="?attr/colorAccent"
+                    android:text="₹"
+                    android:textSize="40sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_toLeftOf="@+id/tvToolbarTotal"
+                    android:padding="10dp" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvToolbarTotal"
+                    android:textColor="?attr/colorAccent"
+                    android:text="0"
+                    android:textSize="40sp"
+                    android:layout_below="@+id/tvToolbarSubTitle"
+                    android:layout_marginTop="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="10dp"
+                    android:layout_alignParentLeft="false"
+                    android:layout_alignParentRight="true" />
+        </RelativeLayout>
+    </android.support.v7.widget.Toolbar>
 
     <ListView
         android:layout_width="match_parent"

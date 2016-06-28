@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
-import android.text.Html;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -30,7 +29,7 @@ import java.util.Locale;
 public class AddLessActivity extends AppCompatActivity {
 
     private ListView listView;
-    private Toolbar toolbar;
+    static Toolbar toolbar;
     private Intent intent;
     private AdapterClass adapterClass;
     private HelperClass helper;
@@ -49,20 +48,19 @@ public class AddLessActivity extends AppCompatActivity {
         incomingDate=(Date)intent.getSerializableExtra("date");
         subTitleDate = getFormattedDate(incomingDate);
         sqlTypeDate=getSqlDate(incomingDate);
-
         toolbar = (Toolbar) findViewById(R.id.my_toolbar);
         if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayShowTitleEnabled(true);
-            getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>"+ BasicActivity.selectedHeadName  +" </font>"));
-            getSupportActionBar().setSubtitle(Html.fromHtml("<font color='#FFFFFF'>"+subTitleDate +" </font>"));
+            ((TextView)toolbar.findViewById(R.id.tvToolbarTitle)).setText(BasicActivity.selectedHeadName);
+            ((TextView)toolbar.findViewById(R.id.tvToolbarSubTitle)).setText(subTitleDate);
+            //getSupportActionBar().setTitle(Html.fromHtml("<font color='#FFFFFF'>"+ BasicActivity.selectedHeadName  +" </font>"));
+            //getSupportActionBar().setSubtitle(Html.fromHtml("<font color='#FFFFFF'>"+subTitleDate +" </font>"));
             getSupportActionBar().setElevation((float) 4.0);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
         listView.setAdapter(new CustomAdapter(this));
-        //New Table Structure:  _id | entryId | subHead | quantity | underHearId | price |
-        //helper.COL_ID,  helper.COL_JOIN_ENTRY_ID,  helper.COL_SUB_HEAD,  helper.COL_QUANTITY,   COL_UNDER_HEAD_ID,   helper.COL_PRICE
 
        /* listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -91,57 +89,44 @@ public class AddLessActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int menuItemId=item.getItemId();
         switch(menuItemId){
-            case R.id.action_save:
-                try {
-
-                    String id,entryId,subHead,quantity;
-                    StringBuilder data=new StringBuilder();
-                    int total=listView.getCount();
-                    for(int i=0; i<total; i++){
-                        quantity=CustomAdapter.dataList.get(i).etQuantity;
-                       if(!quantity.equals("0") ) {
-
-
-                           entryId=CustomAdapter.dataList.get(i).tvEntryNo;
-
-                           if (entryId.equals("-1")) {
-                               id=CustomAdapter.dataList.get(i).tvItemNo;
-                               subHead=CustomAdapter.dataList.get(i).tvItemName;
-                               data.append(id + entryId + subHead + quantity + "\n");
-                               String[] columnNames = new String[]{helper.COL_DATE, helper.COL_SUB_HEAD_ID, helper.COL_QUANTITY};
-                               String[] columnValues = new String[]{sqlTypeDate, id, quantity};
-                               long check = adapterClass.insertValues(helper.TABLE_ENTRIES, columnNames, columnValues);
-                               if (check > 0) {
-                                   Log.i("Insert",data.toString());
-                                  // singleListView.setBackgroundColor(Color.GRAY);
-                                   // Snackbar.make(findViewById(R.id.layoutAddLess), "Done", Snackbar.LENGTH_SHORT)
-                                   //       .setAction("Action", null).show();
-                               } else {
-                                    Log.i("Insert", "Error");
-                                   //Snackbar.make(findViewById(R.id.layoutAddLess), "Fail", Snackbar.LENGTH_SHORT)
-                                   //        .setAction("Action", null).show();
-                               }
-                           } else {
-
-                           }
-
-                       }
-
-                    }
-                   // Toast.makeText(this,data,Toast.LENGTH_LONG).show();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Log.e("error",e.toString());
-                }
+            case R.id.home:
+                onBackPressed();
                 break;
 
             case R.id.action_discard:
                 Intent back=new Intent(this,BasicActivity.class);
                 startActivity(back);
                 break;
-            default:Toast.makeText(this,"Wrong Selection",Toast.LENGTH_SHORT).show();
+
+            case R.id.action_save:
+                try {
+
+                    String id,entryId,quantity;
+                    int total=listView.getCount();
+                    for(int i=0; i<total; i++){
+                        quantity=CustomAdapter.dataList.get(i).etQuantity;
+                        entryId=CustomAdapter.dataList.get(i).tvEntryNo;
+                       if(entryId.equals("-1") ) {
+                           if (!quantity.equals("0")) {
+                               id=CustomAdapter.dataList.get(i).tvItemNo;
+                               String[] columnNames = new String[]{helper.COL_DATE, helper.COL_SUB_HEAD_ID, helper.COL_QUANTITY};
+                               String[] columnValues = new String[]{sqlTypeDate, id, quantity};
+                               adapterClass.insertValues(helper.TABLE_ENTRIES, columnNames, columnValues);
+                           }
+                       }
+                        else {
+                            adapterClass.updateValues(helper.TABLE_ENTRIES,new String[]{helper.COL_QUANTITY},new String[]{quantity},helper.COL_ID+" = ? ",new String[]{entryId});
+                       }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    Log.e("error",e.toString());
+                }
+                break;
+
+            default:
         }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
     private String getFormattedDate(Date date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat(
@@ -184,6 +169,8 @@ class CustomAdapter extends BaseAdapter {
         incomingDate=mainClass.incomingDate;
         dataList=new ArrayList<SingleRow>();
         try {
+            //New Table Structure:  _id | entryId | subHead | quantity | underHearId | price |
+            //helper.COL_ID,  helper.COL_JOIN_ENTRY_ID,  helper.COL_SUB_HEAD,  helper.COL_QUANTITY,   COL_UNDER_HEAD_ID,   helper.COL_PRICE
             allDataCursor= adapterClass.getAllSubHeadsInfo(mainClass.getSqlDate(AddLessActivity.incomingDate),BasicActivity.selectedHeadNumber);
             while(allDataCursor.moveToNext()){
                 String id=allDataCursor.getString(0);
@@ -193,6 +180,7 @@ class CustomAdapter extends BaseAdapter {
                 String price=allDataCursor.getString(5);
                 dataList.add(new SingleRow(id,rowId,subhead,price,quantity));
                 notifyDataSetChanged();
+                getTotalAmount();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -265,6 +253,7 @@ class CustomAdapter extends BaseAdapter {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 dataList.get(position).etQuantity=etQuantity.getText().toString();
+                getTotalAmount();
 
             }
 
@@ -274,6 +263,16 @@ class CustomAdapter extends BaseAdapter {
             }
         });
         return row;
+    }
+
+    public void getTotalAmount(){
+        float total=0;
+        for(int i=0;i<dataList.size();i++) {
+            SingleRow row=dataList.get(i);
+
+            total+= Float.valueOf(row.etQuantity)* Float.valueOf(row.tvRate) ;
+        }
+        ((TextView)AddLessActivity.toolbar.findViewById(R.id.tvToolbarTotal)).setText(String.valueOf( total));
     }
 }
 
