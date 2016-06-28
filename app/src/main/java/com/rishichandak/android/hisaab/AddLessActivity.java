@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 import android.widget.TextView;
@@ -62,12 +61,6 @@ public class AddLessActivity extends AppCompatActivity {
         final Cursor allDataCursor=adapterClass.getAllSubHeadsInfo(getSqlDate(incomingDate),BasicActivity.selectedHeadNumber);
         String[] from=new String[]{helper.COL_ID, helper.COL_JOIN_ENTRY_ID, helper.COL_SUB_HEAD, helper.COL_PRICE, helper.COL_QUANTITY};
         int[] to=new int[]        {R.id.tvItemNo, R.id.tvEntryNo,           R.id.tvItemName,     R.id.tvRate,      R.id.etQuantity};
-
-        //final Cursor allDataCursor= adapterClass.getAllSubHeads();
-        //String[] from=new String[]{helper.COL_ID,helper.COL_SUB_HEAD,helper.COL_PRICE};
-        //int[] to=new int[]{R.id.tvItemNo,R.id.tvItemName,R.id.tvRate};
-
-
         StringBuilder data=new StringBuilder();
         while(allDataCursor.moveToNext()){
             String id=allDataCursor.getString(0);
@@ -121,18 +114,7 @@ public class AddLessActivity extends AppCompatActivity {
         }
         listView.setAdapter(simpleCursorAdapter);
 
-      /*  listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-                int item_id = cursor.getInt(cursor.getColumnIndex(helper.COL_ID));
-                String item_content1 = cursor.getString(cursor.getColumnIndex(helper.COL_HEAD));
-                String item = String.valueOf(item_id) + " : " + item_content1 +"\n";
-                Toast.makeText(getApplicationContext(), item, Toast.LENGTH_LONG).show();
-                Log.i("Click Event eeee","List Item: "+item);
-            }
-        });
-        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+       /* listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Cursor cursor = (Cursor) parent.getItemAtPosition(position);
@@ -170,7 +152,7 @@ public class AddLessActivity extends AppCompatActivity {
         switch(menuItemId){
             case R.id.action_save:
                 try {
-                    ListAdapter listAdapter= listView.getAdapter();
+                    //ListAdapter listAdapter= listView.getAdapter();
                     String id,entryId,subHead,quantity,underHead,price;
                     StringBuilder data=new StringBuilder();
                     int total=listView.getCount();
@@ -207,8 +189,6 @@ public class AddLessActivity extends AppCompatActivity {
                                    //Snackbar.make(findViewById(R.id.layoutAddLess), "Fail", Snackbar.LENGTH_SHORT)
                                    //        .setAction("Action", null).show();
                                }
-
-
                            } else {
 
                            }

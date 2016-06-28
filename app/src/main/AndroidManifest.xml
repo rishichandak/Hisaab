@@ -8,24 +8,26 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/myTheam">
-
-        <activity android:name=".BasicActivity"
+        <activity
+            android:name=".BasicActivity"
             android:label="@string/title_activity_basic"
             android:theme="@style/myTheam">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".AddLessActivity"
+            android:parentActivityName=".BasicActivity">
 
-        <activity android:name=".AddLessActivity"
-            android:parentActivityName=".BasicActivity" >
             <!-- The meta-data element is needed for versions lower than 4.1 -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".BasicActivity" />
         </activity>
-
+        <activity android:name=".ListTry"></activity>
     </application>
 
 </manifest>

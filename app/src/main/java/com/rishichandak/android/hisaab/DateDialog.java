@@ -33,7 +33,7 @@ public class DateDialog extends DialogFragment implements DatePickerDialog.OnDat
         Calendar c=Calendar.getInstance();
         c.set(year,monthOfYear,dayOfMonth);
         Date selectedDate= c.getTime();
-        Intent intent=new Intent(getActivity(),AddLessActivity.class);
+        Intent intent=new Intent(getActivity(),ListTry.class);
         intent.putExtra("date",selectedDate);
       //  Toast.makeText(getActivity(), dayOfMonth +"/" + (monthOfYear+1) +"/"+ year ,Toast.LENGTH_LONG).show();
         startActivity(intent);
