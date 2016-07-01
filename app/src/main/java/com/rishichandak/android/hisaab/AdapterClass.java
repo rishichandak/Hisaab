@@ -122,4 +122,41 @@ public class AdapterClass  {
         // db.close();
         return cursor;
     }
+
+    public Cursor getMonthlyTotal(String month,String year,String subHead){
+        SQLiteDatabase db=helper.getWritableDatabase();
+        Cursor cursor=null;
+        final String query=
+                "select IFNULL( SUM("+helper.COL_PRICE+"*"+helper.COL_QUANTITY+"),0) "+helper.COL_JOIN_TOTAL+" , "+helper.TABLE_SUBHEADS+"."+helper.COL_UNDER_HEAD_ID+
+                        " from " +
+                        helper.TABLE_SUBHEADS +
+                        " join " +
+                        helper.TABLE_ENTRIES +
+                        " on " +
+                        helper.TABLE_SUBHEADS+"."+helper.COL_ID+"="+helper.TABLE_ENTRIES+"."+helper.COL_SUB_HEAD_ID+
+                        " where "+helper.TABLE_SUBHEADS+"."+helper.COL_UNDER_HEAD_ID+"=? "+
+                        " and " +
+                        " strftime('%Y',"+helper.TABLE_ENTRIES+"."+helper.COL_DATE+") = ? "+
+                        " AND "+
+                        "strftime('%m',"+helper.TABLE_ENTRIES+"."+helper.COL_DATE+") = ? ";
+
+
+        //String query="select subHeadId  from entries where strftime('%m',"+helper.TABLE_ENTRIES+"."+helper.COL_DATE+")='07'";
+
+        try {
+            StringBuilder data=new StringBuilder();
+            cursor=db.rawQuery(query,new String[]{subHead, String.valueOf(year), month});
+
+            while(cursor.moveToNext()){
+                String total=cursor.getString(0);
+                data.append(total);
+            }
+            Toast.makeText(context,month+"/"+year+": "+data,Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            Toast.makeText(context,"Show Error:    "+e.toString(),Toast.LENGTH_LONG).show();
+        }
+        // db.close();
+        return cursor;
+    }
 }

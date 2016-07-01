@@ -5,6 +5,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,6 +41,7 @@ public class AddLessActivity extends AppCompatActivity {
     private String subTitleDate="Sat, 10 Sep,'94" ;
     private String sqlTypeDate="1994-09-10";
     public static int isEdited=0;
+    public static View parentView;
     CustomAdapter customAdapter=null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,7 @@ public class AddLessActivity extends AppCompatActivity {
         listView=(ListView) findViewById(R.id.listView);
         adapterClass=new AdapterClass(this);
         helper=new HelperClass(this);
+        parentView= findViewById(R.id.layoutAddLess);
         //Get Intent Date
         intent=getIntent();
         incomingDate=(Date)intent.getSerializableExtra("date");
@@ -66,22 +71,38 @@ public class AddLessActivity extends AppCompatActivity {
         customAdapter=new CustomAdapter(this);
         listView.setAdapter(customAdapter);
 
-       /* listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+            }
+        });
+
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Cursor cursor = (Cursor) parent.getItemAtPosition(position);
-                int item_id = cursor.getInt(cursor.getColumnIndex(helper.COL_ID));
-                String item_content1 = cursor.getString(cursor.getColumnIndex(helper.COL_HEAD));
-                String item = String.valueOf(item_id) + " : " + item_content1 +"\n";
-                Toast.makeText(getApplicationContext(), item, Toast.LENGTH_LONG).show();
-                Log.i("Click Event","List Item: "+item);
+               // Cursor cursor = (Cursor) parent.getItemAtPosition(position);
+               // int item_id = cursor.getInt(cursor.getColumnIndex(helper.COL_ID));
+               // String item_content1 = cursor.getString(cursor.getColumnIndex(helper.COL_HEAD));
+               // String item = String.valueOf(item_id) + " : " + item_content1 +"\n";
+
+                Toast.makeText(getApplicationContext(), "Pressed", Toast.LENGTH_LONG).show();
+               // Log.i("Click Event","List Item: "+item);
                 return true;
             }
-        }); */
+        });
 /*      adapterClass.insertValues(helper.TABLE_ENTRIES, new String[]{helper.COL_DATE,helper.COL_SUB_HEAD_ID,helper.COL_QUANTITY}, new String[]{getSqlDate(incommingDate),"1","2"});
         adapterClass.insertValues(helper.TABLE_ENTRIES, new String[]{helper.COL_DATE,helper.COL_SUB_HEAD_ID,helper.COL_QUANTITY}, new String[]{getSqlDate(incommingDate),"2","4"});
         adapterClass.insertValues(helper.TABLE_ENTRIES, new String[]{helper.COL_DATE,helper.COL_SUB_HEAD_ID,helper.COL_QUANTITY}, new String[]{getSqlDate(incommingDate),"4","1"});
 */
+
+        adapterClass.getMonthlyTotal("07","2016", BasicActivity.selectedHeadNumber);
+        adapterClass.getMonthlyTotal("06","2016", BasicActivity.selectedHeadNumber);
+        adapterClass.getMonthlyTotal("07","2015", BasicActivity.selectedHeadNumber);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -98,8 +119,21 @@ public class AddLessActivity extends AppCompatActivity {
                 break;
 
             case R.id.action_discard:
-                Intent back=new Intent(this,BasicActivity.class);
-                startActivity(back);
+                if (AddLessActivity.isEdited == 1) {
+                    new AlertDialog.Builder(this)
+                            .setTitle("Really Exit?")
+                            .setMessage("Are you sure you want to exit without saving?")
+                            .setNegativeButton(android.R.string.no, null)
+                            .setPositiveButton(R.string.dialog_exit, new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface arg0, int arg1) {
+                                    finish();
+                                    AddLessActivity.isEdited=0;
+                                }
+                            }).create().show();
+                }
+                else{
+                    super.onBackPressed();
+                }
                 break;
 
             case R.id.action_save:
@@ -121,13 +155,18 @@ public class AddLessActivity extends AppCompatActivity {
                             adapterClass.updateValues(helper.TABLE_ENTRIES,new String[]{helper.COL_QUANTITY},new String[]{quantity},helper.COL_ID+" = ? ",new String[]{entryId});
                        }
                     }
-                    Toast.makeText(this,"Record Saved",Toast.LENGTH_LONG).show();
+
+                    Snackbar.make(parentView, "Record Saved", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
                     listView.setAdapter(new CustomAdapter(this));
                     AddLessActivity.isEdited=0;
 
                 } catch (Exception e) {
                     e.printStackTrace();
-                    Toast.makeText(this,"Error Saving",Toast.LENGTH_LONG).show();
+                    Snackbar.make(parentView, "Error Saving", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
                 }
                 break;
 
@@ -288,7 +327,10 @@ class CustomAdapter extends BaseAdapter {
                     finalViewHolder.etQuantity.setText(String.valueOf(--qty));
                 }
                 else {
-                    Toast.makeText(context, "Quantity cannot be less than 0", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(context, "Quantity cannot be less than 0", Toast.LENGTH_SHORT).show();
+                    Snackbar.make(AddLessActivity.parentView, "Quantity cannot be less than 0", Snackbar.LENGTH_LONG)
+                            .setAction("Action", null).show();
+
                 }
             }
         });
@@ -317,13 +359,12 @@ class CustomAdapter extends BaseAdapter {
     }
 
     public void getTotalAmount(){
-        float total=0;
+        int total=0;
         for(int i=0;i<dataList.size();i++) {
             SingleRow row=dataList.get(i);
 
             total+= Float.valueOf(row.etQuantity)* Float.valueOf(row.tvRate) ;
         }
-        ((TextView)AddLessActivity.toolbar.findViewById(R.id.tvToolbarTotal)).setText(String.valueOf( total));
+        ((TextView)AddLessActivity.toolbar.findViewById(R.id.tvToolbarTotal)).setText(String.valueOf(total));
     }
 }
-

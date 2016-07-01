@@ -2,4 +2,7 @@
     <string name="app_name">Hisaab</string>
     <string name="title_activity_basic">Hisaab</string>
     <string name="dialog_exit">Exit</string>
+    <string name="title_activity_first">FirstActivity</string>
+    <string name="action_settings">Settings</string>
+    <string name="section_format">Hello World from section: %1$d</string>
 </resources>

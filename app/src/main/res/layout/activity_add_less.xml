@@ -1,52 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:id="@+id/layoutAddLess"
-    android:layout_height="wrap_content"
     tools:context="com.rishichandak.android.hisaab.AddLessActivity">
-<!--    <android.support.v7.widget.Toolbar
-        android:id="@+id/my_toolbar"
-        android:layout_width="wrap_content"
-        android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimaryDark"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-
-        >
-    </android.support.v7.widget.Toolbar>
--->
-
-    <android.support.v7.widget.Toolbar
-        android:id="@+id/my_toolbar"
+    <RelativeLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="?attr/colorPrimaryDark"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
-        <RelativeLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tvToolbarTitle"
-                style="@style/Base.TextAppearance.AppCompat.Title"
-                android:textColor="#FFFFFF"
-                android:text="Hisaab"
-                />
-            <TextView
-                android:layout_below="@+id/tvToolbarTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/tvToolbarSubTitle"
-                style="@style/Base.TextAppearance.AppCompat.Subhead"
-                android:textColor="#FFFFFF"
-                android:text="Hisaab"
-                />
+
+        android:layout_height="match_parent">
+
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/my_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="?attr/colorPrimaryDark"
+            android:elevation="4dp"
+            android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+            <RelativeLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvToolbarTitle"
+                    style="@style/Base.TextAppearance.AppCompat.Title"
+                    android:textColor="#FFFFFF"
+                    android:text="Hisaab"
+                    />
+                <TextView
+                    android:layout_below="@+id/tvToolbarTitle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvToolbarSubTitle"
+                    style="@style/Base.TextAppearance.AppCompat.Subhead"
+                    android:textColor="#FFFFFF"
+                    android:text="Hisaab"
+                    />
 
                 <TextView
                     android:layout_below="@+id/tvToolbarSubTitle"
@@ -55,10 +49,12 @@
                     android:id="@+id/tvToolbarRs"
                     android:textColor="?attr/colorAccent"
                     android:text="₹"
-                    android:textSize="40sp"
-                    android:layout_marginTop="10dp"
+                    android:textSize="20sp"
                     android:layout_toLeftOf="@+id/tvToolbarTotal"
-                    android:padding="10dp" />
+                    android:paddingTop="24dp"
+                    android:paddingLeft="30dp"
+                    android:paddingRight="7dp"
+                    android:paddingBottom="30dp" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -67,24 +63,38 @@
                     android:text="0"
                     android:textSize="40sp"
                     android:layout_below="@+id/tvToolbarSubTitle"
-                    android:layout_marginTop="10dp"
-                    android:paddingTop="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingBottom="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingRight="30dp"
+                    android:paddingBottom="25dp"
                     android:layout_alignParentLeft="false"
-                    android:layout_alignParentRight="true" />
-        </RelativeLayout>
-    </android.support.v7.widget.Toolbar>
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="10dp"
+                    android:gravity="center"
+                    android:contextClickable="false"
+                    />
+            </RelativeLayout>
+        </android.support.v7.widget.Toolbar>
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/listView"
-        android:footerDividersEnabled="false"
-        android:headerDividersEnabled="false"
-        android:dividerHeight="7dp"
-        android:layout_below="@+id/my_toolbar"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="2dp" />
-</RelativeLayout>
+        <ListView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/listView"
+            android:dividerHeight="7dp"
+            android:layout_below="@+id/my_toolbar"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginBottom="2dp" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/fab_margin"
+            android:src="@drawable/ic_action_add"
+            android:layout_centerHorizontal="true"
+            android:layout_alignBottom="@id/my_toolbar"
+            android:layout_marginBottom="-28dp"
+             />
+
+    </RelativeLayout>
+</android.support.design.widget.CoordinatorLayout>

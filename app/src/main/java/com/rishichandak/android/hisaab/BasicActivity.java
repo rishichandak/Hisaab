@@ -1,5 +1,7 @@
 package com.rishichandak.android.hisaab;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -13,6 +15,8 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
 public class BasicActivity extends AppCompatActivity {
 
     private AdapterClass adapterClass;
@@ -22,11 +26,19 @@ public class BasicActivity extends AppCompatActivity {
 
     public static String selectedHeadNumber="0";
     public static String selectedHeadName="hisaab";
+Calendar calendar;
+    //
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_basic);
+
+
+        calendar= Calendar.getInstance();
+        int mn=calendar.get(Calendar.MONTH);
+
+
         adapterClass = new AdapterClass(this);
         helper = new HelperClass(this);
 
@@ -39,8 +51,14 @@ public class BasicActivity extends AppCompatActivity {
             getSupportActionBar().setDisplayShowTitleEnabled(false);
             //getSupportActionBar().setIcon(R.drawable.ic_launcher);
         }
-        addItemsToSpinner();
         // Toolbar Ends
+
+        addItemsToSpinner();
+        SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+        int spinnerLastPosition = sharedPref.getInt("spinnerLastPosition", 0);
+        spinner_nav.setSelection(spinnerLastPosition);
+
+
 
 /*
         adapterClass.insertValues(helper.TABLE_HEADS, new String[]{helper.COL_HEAD}, new String[]{"Milk"});
@@ -79,22 +97,24 @@ public class BasicActivity extends AppCompatActivity {
         final Cursor allDataCursor= adapterClass.getAllHeads();
         String[] from=new String[]{helper.COL_HEAD};
         int[] to=new int[]{R.id.tvItemName};
-        SimpleCursorAdapter simpleCursorAdapter=new SimpleCursorAdapter(getBaseContext(),R.layout.spinner_row,allDataCursor,from,to,0);
+        SimpleCursorAdapter simpleCursorAdapter=new SimpleCursorAdapter(this, R.layout.spinner_row, allDataCursor, from, to, 0);
         simpleCursorAdapter.notifyDataSetChanged();
         spinner_nav.setAdapter(simpleCursorAdapter);
         spinner_nav.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             @Override
-            public void onItemSelected(AdapterView<?> adapter, View v,
-                                       int position, long id) {
+            public void onItemSelected(AdapterView<?> adapter, View v, int position, long id) {
                 // On selecting a spinner item
                 Cursor item = (Cursor)adapter.getItemAtPosition(position);
                 selectedHeadNumber=item.getString(item.getColumnIndex(helper.COL_ID));
                 selectedHeadName=item.getString(item.getColumnIndex(helper.COL_HEAD));
-
                 // Showing selected spinner item
-                Toast.makeText(getApplicationContext(), "Selected  : " + selectedHeadNumber+" Name:"+selectedHeadName,
-                        Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Selected  :"+selectedHeadName,
+                        Toast.LENGTH_SHORT).show();
+                SharedPreferences sharedPref = getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putInt("spinnerLastPosition", spinner_nav.getSelectedItemPosition());
+                editor.commit();
             }
 
             @Override

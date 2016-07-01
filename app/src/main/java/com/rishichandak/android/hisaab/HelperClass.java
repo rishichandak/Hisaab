@@ -39,6 +39,8 @@ public class HelperClass extends SQLiteOpenHelper {
 
     //JOIN COLUMN NAME
     public static final String COL_JOIN_ENTRY_ID="entryId";
+    public static final String COL_JOIN_TOTAL="total";
+
 
 
     //Database Version

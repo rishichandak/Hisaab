@@ -5,15 +5,12 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     card_view:cardCornerRadius="10dp"
     card_view:cardElevation="5dp"
-    android:padding="15dp"
-    android:clickable="true"
-    android:longClickable="true">
+    android:padding="15dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/relativeList"
-        android:clickable="true"
         android:longClickable="true">
 
         <TextView
@@ -49,7 +46,8 @@
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@+id/tvItemNo"
             android:paddingTop="10dp"
-            android:paddingBottom="5dp" />
+            android:paddingBottom="5dp"
+            android:layout_marginTop="2dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -100,8 +98,9 @@
             android:paddingTop="7dp"
             android:paddingRight="20dp"
             android:paddingLeft="20dp"
-            android:paddingBottom="5dp"
-            android:clickable="true" />
+            android:paddingBottom="10dp"
+            android:clickable="true"
+            android:layout_above="@+id/btnMinus" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -111,16 +110,16 @@
             android:minHeight="30dp"
             android:minWidth="30dp"
             android:id="@+id/btnMinus"
-            android:layout_below="@+id/btnPlus"
-            android:layout_alignParentEnd="true"
             android:textColor="@android:color/holo_red_dark"
             android:background="?android:attr/selectableItemBackground"
             android:textSize="25dp"
             android:paddingTop="7dp"
-            android:paddingBottom="2dp"
+            android:paddingBottom="0dp"
             android:paddingRight="20dp"
             android:paddingLeft="20dp"
-            android:clickable="true" />
+            android:clickable="true"
+            android:layout_alignTop="@+id/tvRate"
+            android:layout_alignParentEnd="true" />
 
         <EditText
             android:layout_width="wrap_content"
