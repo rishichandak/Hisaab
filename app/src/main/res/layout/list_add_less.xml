@@ -47,7 +47,7 @@
             android:layout_toLeftOf="@+id/tvItemNo"
             android:paddingTop="10dp"
             android:paddingBottom="5dp"
-            android:layout_marginTop="2dp" />
+            android:layout_marginTop="5dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -131,7 +131,7 @@
             android:textSize="@dimen/abc_text_size_display_1_material"
             android:layout_toStartOf="@+id/btnPlus"
             android:padding="10dp"
-            android:inputType="numberDecimal"
+            android:inputType="number"
             android:maxWidth="100dp"
             android:layout_alignBottom="@+id/tvAt"
              />

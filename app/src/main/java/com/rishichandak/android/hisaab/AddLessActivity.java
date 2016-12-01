@@ -30,6 +30,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import static com.rishichandak.android.hisaab.HelperClass.COL_ID;
+import static com.rishichandak.android.hisaab.HelperClass.COL_JOIN_ENTRY_ID;
+import static com.rishichandak.android.hisaab.HelperClass.COL_PRICE;
+import static com.rishichandak.android.hisaab.HelperClass.COL_QUANTITY;
+import static com.rishichandak.android.hisaab.HelperClass.COL_SUB_HEAD;
+
 public class AddLessActivity extends AppCompatActivity {
 
     private ListView listView;
@@ -51,6 +57,8 @@ public class AddLessActivity extends AppCompatActivity {
         adapterClass=new AdapterClass(this);
         helper=new HelperClass(this);
         parentView= findViewById(R.id.layoutAddLess);
+        listView.setDescendantFocusability(ViewGroup.FOCUS_BEFORE_DESCENDANTS); // for correct et keyboard in lv.. one line in manifest also
+
         //Get Intent Date
         intent=getIntent();
         incomingDate=(Date)intent.getSerializableExtra("date");
@@ -78,6 +86,8 @@ public class AddLessActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+             //   CustomAdapter.dataList.add(new SingleRow(null,null,null,null,null));
+             //   customAdapter.notifyDataSetChanged();
 
             }
         });
@@ -100,9 +110,9 @@ public class AddLessActivity extends AppCompatActivity {
         adapterClass.insertValues(helper.TABLE_ENTRIES, new String[]{helper.COL_DATE,helper.COL_SUB_HEAD_ID,helper.COL_QUANTITY}, new String[]{getSqlDate(incommingDate),"4","1"});
 */
 
-        adapterClass.getMonthlyTotal("07","2016", BasicActivity.selectedHeadNumber);
-        adapterClass.getMonthlyTotal("06","2016", BasicActivity.selectedHeadNumber);
-        adapterClass.getMonthlyTotal("07","2015", BasicActivity.selectedHeadNumber);
+       // adapterClass.getMonthlyTotal("07","2016", BasicActivity.selectedHeadNumber);
+        //adapterClass.getMonthlyTotal("06","2016", BasicActivity.selectedHeadNumber);
+        //adapterClass.getMonthlyTotal("07","2015", BasicActivity.selectedHeadNumber);
     }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -152,7 +162,7 @@ public class AddLessActivity extends AppCompatActivity {
                            }
                        }
                         else {
-                            adapterClass.updateValues(helper.TABLE_ENTRIES,new String[]{helper.COL_QUANTITY},new String[]{quantity},helper.COL_ID+" = ? ",new String[]{entryId});
+                            adapterClass.updateValues(helper.TABLE_ENTRIES,new String[]{helper.COL_QUANTITY},new String[]{quantity}, COL_ID+" = ? ",new String[]{entryId});
                        }
                     }
 
@@ -238,15 +248,23 @@ class CustomAdapter extends BaseAdapter {
             //helper.COL_ID,  helper.COL_JOIN_ENTRY_ID,  helper.COL_SUB_HEAD,  helper.COL_QUANTITY,   COL_UNDER_HEAD_ID,   helper.COL_PRICE
             allDataCursor= adapterClass.getAllSubHeadsInfo(mainClass.getSqlDate(AddLessActivity.incomingDate),BasicActivity.selectedHeadNumber);
             while(allDataCursor.moveToNext()){
-                String id=allDataCursor.getString(0);
-                String rowId=allDataCursor.getString(1);
-                String subhead=allDataCursor.getString(2);
-                String quantity=allDataCursor.getString(3);
-                String price=allDataCursor.getString(5);
+                String id=allDataCursor.getString(allDataCursor.getColumnIndex(COL_ID));  //0
+                String rowId=allDataCursor.getString(allDataCursor.getColumnIndex(COL_JOIN_ENTRY_ID));  //1
+                String subhead=allDataCursor.getString(allDataCursor.getColumnIndex(COL_SUB_HEAD));  //2
+                String quantity=allDataCursor.getString(allDataCursor.getColumnIndex(COL_QUANTITY));  //3
+                String price=allDataCursor.getString(allDataCursor.getColumnIndex(COL_PRICE));  //5
+
+              /*  id=allDataCursor.getString(0);  //0
+                rowId=allDataCursor.getString(1);  //1
+                subhead=allDataCursor.getString(2);  //2
+                quantity=allDataCursor.getString(3);  //3
+                price=allDataCursor.getString(5);  //5  */
+
                 dataList.add(new SingleRow(id,rowId,subhead,price,quantity));
-                notifyDataSetChanged();
-                getTotalAmount();
             }
+            notifyDataSetChanged();
+            getTotalAmount();
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -284,12 +302,11 @@ class CustomAdapter extends BaseAdapter {
              btnPlus= (Button) row.findViewById(R.id.btnPlus);
              btnMinus= (Button) row.findViewById(R.id.btnMinus);
         }
-
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-       View row=convertView;
+        View row=convertView;
         ViewHolder viewHolder=null;
         if(viewHolder==null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

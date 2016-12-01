@@ -1,6 +1,7 @@
 package com.rishichandak.android.hisaab;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -60,26 +61,9 @@ Calendar calendar;
 
 
 
-/*
-        adapterClass.insertValues(helper.TABLE_HEADS, new String[]{helper.COL_HEAD}, new String[]{"Milk"});
-        adapterClass.insertValues(helper.TABLE_HEADS, new String[]{helper.COL_HEAD}, new String[]{"Laundry"});
 
-        adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Toned","1","28"});
-        adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Cream","1","35"});
-        adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Full Cream","1","40"});
-        adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Ram Dudh wala morning","1","35"});
-        adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Ram Dudh wala evening","1","40"});
-        adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Dahi 100gm","1","20"});
-        adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Dahi 250gm","1","50"});
 
-        adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Shirt","2","5"});
-        adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Pant","2","5"});
-        adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Saree","2","15"});
-        adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Coat","2","30"});
-        adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Salwar","2","10"});
-        adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID,helper.COL_PRICE}, new String[]{"Kurta","2","15"});
 
-*/
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -156,13 +140,45 @@ Calendar calendar;
             Toast.makeText(getApplicationContext(), "Search Clicked",
                     Toast.LENGTH_SHORT).show();
             return true;
-        } else if (id == "Add") {
+        } else if (id.equals("Add")) {
             Toast.makeText(getApplicationContext(), "Add Clicked",
                     Toast.LENGTH_SHORT).show();
+            adapterClass.insertValues(helper.TABLE_HEADS, new String[]{helper.COL_HEAD}, new String[]{"Milk"});
+            adapterClass.insertValues(helper.TABLE_HEADS, new String[]{helper.COL_HEAD}, new String[]{"Laundry"});
+
+            adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID}, new String[]{"Toned","1"});
+            adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID}, new String[]{"Cream","1"});
+            adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID}, new String[]{"Full Cream","1"});
+            adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID}, new String[]{"Ram Dudh wala morning","1"});
+            adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID}, new String[]{"Ram Dudh wala evening","1"});
+            adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID}, new String[]{"Dahi 100gm","1"});
+            adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID}, new String[]{"Dahi 250gm","1"});
+
+            adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID}, new String[]{"Shirt","2"});
+            adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID}, new String[]{"Pant","2"});
+            adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID}, new String[]{"Saree","2"});
+            adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID}, new String[]{"Coat","2"});
+            adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID}, new String[]{"Salwar","2"});
+            adapterClass.insertValues(helper.TABLE_SUBHEADS, new String[]{helper.COL_SUB_HEAD,helper.COL_UNDER_HEAD_ID}, new String[]{"Kurta","2"});
+
+            adapterClass.insertValues(helper.TABLE_RATES, new String[]{helper.COL_UNDER_SUB_HEAD_ID,helper.COL_WEFDATE,helper.COL_PRICE}, new String[]{"1","2016-11-10","10"});
+            adapterClass.insertValues(helper.TABLE_RATES, new String[]{helper.COL_UNDER_SUB_HEAD_ID,helper.COL_WEFDATE,helper.COL_PRICE}, new String[]{"2","2016-11-10","20"});
+            adapterClass.insertValues(helper.TABLE_RATES, new String[]{helper.COL_UNDER_SUB_HEAD_ID,helper.COL_WEFDATE,helper.COL_PRICE}, new String[]{"3","2016-11-10","30"});
+            adapterClass.insertValues(helper.TABLE_RATES, new String[]{helper.COL_UNDER_SUB_HEAD_ID,helper.COL_WEFDATE,helper.COL_PRICE}, new String[]{"1","2016-11-30","11"});
+            adapterClass.insertValues(helper.TABLE_RATES, new String[]{helper.COL_UNDER_SUB_HEAD_ID,helper.COL_WEFDATE,helper.COL_PRICE}, new String[]{"3","2016-11-25","33"});
+            adapterClass.insertValues(helper.TABLE_RATES, new String[]{helper.COL_UNDER_SUB_HEAD_ID,helper.COL_WEFDATE,helper.COL_PRICE}, new String[]{"2","2016-11-20","22"});
+            adapterClass.insertValues(helper.TABLE_RATES, new String[]{helper.COL_UNDER_SUB_HEAD_ID,helper.COL_WEFDATE,helper.COL_PRICE}, new String[]{"4","2016-11-20","40"});
+            adapterClass.insertValues(helper.TABLE_RATES, new String[]{helper.COL_UNDER_SUB_HEAD_ID,helper.COL_WEFDATE,helper.COL_PRICE}, new String[]{"7","2016-11-10","70"});
+            adapterClass.insertValues(helper.TABLE_RATES, new String[]{helper.COL_UNDER_SUB_HEAD_ID,helper.COL_WEFDATE,helper.COL_PRICE}, new String[]{"5","2016-11-10","50"});
+            adapterClass.insertValues(helper.TABLE_RATES, new String[]{helper.COL_UNDER_SUB_HEAD_ID,helper.COL_WEFDATE,helper.COL_PRICE}, new String[]{"4","2016-11-10","44"});
+            adapterClass.insertValues(helper.TABLE_RATES, new String[]{helper.COL_UNDER_SUB_HEAD_ID,helper.COL_WEFDATE,helper.COL_PRICE}, new String[]{"6","2016-11-10","60"});
+
             return true;
-        } else if (id == "Delete") {
+        } else if (id.equals("Delete")) {
             Toast.makeText(getApplicationContext(), "Delete Clicked",
                     Toast.LENGTH_SHORT).show();
+            Intent intent=new Intent(this,CreationActivity.class);
+            startActivity(intent);
             return true;
         }
         return super.onOptionsItemSelected(item);

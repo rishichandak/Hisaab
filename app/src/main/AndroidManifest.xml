@@ -8,7 +8,6 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/myTheam">
-
         <activity
             android:name=".BasicActivity"
             android:label="@string/title_activity_basic"
@@ -21,13 +20,26 @@
         </activity>
         <activity
             android:name=".AddLessActivity"
+            android:configChanges="orientation|screenSize"
             android:parentActivityName=".BasicActivity"
-            android:configChanges="orientation|screenSize">
+            android:windowSoftInputMode="adjustPan">
+            <!-- for et in lv -->
+
 
             <!-- The meta-data element is needed for versions lower than 4.1 -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".BasicActivity" />
         </activity>
+        <activity
+            android:name=".CreationActivity"
+            android:label="@string/title_activity_creation"
+            android:parentActivityName=".BasicActivity"
+            android:theme="@style/myTheam">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.rishichandak.android.hisaab.BasicActivity" />
+        </activity>
     </application>
+
 </manifest>

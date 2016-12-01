@@ -17,6 +17,7 @@ public class HelperClass extends SQLiteOpenHelper {
     //Table Name
     public static final String TABLE_HEADS="heads";
     public static final String TABLE_SUBHEADS="subheads";
+    public static final String TABLE_RATES="rates";
     public static final String TABLE_ENTRIES="entries";
 
     //Common Table Column
@@ -28,11 +29,15 @@ public class HelperClass extends SQLiteOpenHelper {
     //SubHead Table Column
     public static final String COL_SUB_HEAD="subHead";
     public static final String COL_UNDER_HEAD_ID="underHeadId";
-    public static final String COL_PRICE="price";
     public static final String COL_SHOW="show";
     public static final String COL_ICON="icon";
 
-    //Entries Tabe Column
+    //Rate Table Column
+    public static final String COL_UNDER_SUB_HEAD_ID="underSubHeadId";
+    public static final String COL_WEFDATE="wefDate";
+    public static final String COL_PRICE="price";
+
+    //Entries Table Column
     public static final String COL_DATE="date";
     public static final String COL_SUB_HEAD_ID="subHeadId";
     public static final String COL_QUANTITY="quantity";
@@ -41,13 +46,9 @@ public class HelperClass extends SQLiteOpenHelper {
     public static final String COL_JOIN_ENTRY_ID="entryId";
     public static final String COL_JOIN_TOTAL="total";
 
-
-
     //Database Version
     private static final int DATABASE_VERSION=1;
-
     private Context context;
-
     //Table Creation Query
     private static final String CREATE_HEADS= "CREATE TABLE "
             +TABLE_HEADS+ "("
@@ -59,7 +60,6 @@ public class HelperClass extends SQLiteOpenHelper {
             +COL_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT,"
             +COL_SUB_HEAD+ " VARCHAR(100) UNIQUE  ,"
             +COL_UNDER_HEAD_ID+ " INTEGER NOT NULL,"
-            +COL_PRICE+ " INTEGER NOT NULL,"
             +COL_SHOW+ " INTEGER DEFAULT 1,"
             +COL_ICON+ " VARCHAR(255),"
             +" FOREIGN KEY(" +COL_UNDER_HEAD_ID+ ") REFERENCES " +TABLE_HEADS+ "( " +COL_ID+ " ));";
@@ -69,13 +69,23 @@ public class HelperClass extends SQLiteOpenHelper {
             +COL_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT,"
             +COL_DATE+ " DATE NOT NULL,"
             +COL_SUB_HEAD_ID+ " INTEGER NOT NULL,"
-            +COL_QUANTITY+ " INTEGER NOT NULL,"
+            +COL_QUANTITY+ " REAL NOT NULL,"
             +"FOREIGN KEY(" +COL_SUB_HEAD_ID+ ") REFERENCES " +TABLE_SUBHEADS+ " ( " +COL_ID+ "));";
+
+    private static final String CREATE_RATES= "CREATE TABLE "
+            +TABLE_RATES+ "("
+            +COL_ID+ " INTEGER PRIMARY KEY AUTOINCREMENT,"
+            +COL_UNDER_SUB_HEAD_ID+ " INTEGER NOT NULL,"
+            +COL_WEFDATE+ " DATE NOT NULL,"
+            +COL_PRICE+ " REAL NOT NULL,"
+            +"UNIQUE("+COL_ID+","+COL_UNDER_SUB_HEAD_ID+","+COL_WEFDATE+"),"
+            +"FOREIGN KEY(" +COL_UNDER_SUB_HEAD_ID+ ") REFERENCES " +TABLE_SUBHEADS+ " ( " +COL_ID+ "));";
 
     //Table Deletion Queries
     private static final String DELETE_HEADS= "DROP TABLE IF EXISTS "+TABLE_HEADS;
     private static final String DELETE_SUBHEADS= "DROP TABLE IF EXISTS "+TABLE_SUBHEADS;
     private static final String DELETE_ENTRIES= "DROP TABLE IF EXISTS "+TABLE_ENTRIES;
+    private static final String DELETE_RATES= "DROP TABLE IF EXISTS "+TABLE_RATES;
 
     public HelperClass(Context context){
         super(context,DATABASE_NAME,null,DATABASE_VERSION);
@@ -88,7 +98,8 @@ public class HelperClass extends SQLiteOpenHelper {
             db.execSQL(CREATE_HEADS);
             db.execSQL(CREATE_SUBHEADS);
             db.execSQL(CREATE_ENTRIES);
-            //Toast.makeText(context,"onCreate Called",Toast.LENGTH_SHORT).show();
+            db.execSQL(CREATE_RATES);
+            Toast.makeText(context,"onCreate Called",Toast.LENGTH_SHORT).show();
         } catch (SQLException e) {
             e.printStackTrace();
             Toast.makeText(context,e.toString(),Toast.LENGTH_LONG).show();
@@ -102,6 +113,7 @@ public class HelperClass extends SQLiteOpenHelper {
             db.execSQL(DELETE_HEADS);
             db.execSQL(DELETE_SUBHEADS);
             db.execSQL(DELETE_ENTRIES);
+            db.execSQL(DELETE_RATES);
             Toast.makeText(context,"onUpdate Called",Toast.LENGTH_SHORT).show();
             this.onCreate(db);
         } catch (SQLException e) {
